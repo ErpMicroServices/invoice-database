@@ -79,3 +79,31 @@ create table if not exists invoice_item(
   adjustment_type_id uuid references adjustment_type(id),
   CONSTRAINT invoice_item_pk PRIMARY key(id)
 );
+
+create table if not exists invoice_status_type(
+  id uuid DEFAULT uuid_generate_v4(),
+  description text not null CONSTRAINT invoice_status_type_description_not_empty CHECK (description <> ''),
+  CONSTRAINT _type_pk PRIMARY key(id)
+);
+
+create table if not exists invoice_status(
+  id uuid DEFAULT uuid_generate_v4(),
+  satus_date date not null default current_date,
+  status_for uuid not null references invoice(id),
+  described_by uuid not null references invoice_status_type(id),
+  CONSTRAINT invoice_status_pk PRIMARY key(id)
+);
+
+create table if not exists term_type(
+  id uuid DEFAULT uuid_generate_v4(),
+  description text not null CONSTRAINT term_type_description_not_empty CHECK (description <> ''),
+  CONSTRAINT term_type_pk PRIMARY key(id)
+);
+
+create table if not exists invoice_term(
+  id uuid DEFAULT uuid_generate_v4(),
+  term_value text not null CONSTRAINT term_value_not_empty CHECK (term_value <> ''),
+  condition_for_invoice_item uuid not null references invoice_item(id),
+  condition_for_invoice uuid not null references invoice(id),
+  CONSTRAINT invoice_term_pk PRIMARY key(id)
+);
