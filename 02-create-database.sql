@@ -107,3 +107,10 @@ create table if not exists invoice_term(
   condition_for_invoice uuid not null references invoice(id),
   CONSTRAINT invoice_term_pk PRIMARY key(id)
 );
+
+create table if not exists shipment_item_billing(
+  id uuid DEFAULT uuid_generate_v4(),
+  of_shipment_item uuid not null,
+  for_invoice_item uuid not null references invoice_item(id),
+  CONSTRAINT shipment_item_billing_pk PRIMARY key(id)
+);
