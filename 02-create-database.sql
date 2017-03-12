@@ -12,6 +12,20 @@ create table if not exists invoice_role(
   CONSTRAINT invoice_role_pk PRIMARY key(id)
 );
 
+create table if not exists billing_account_role_type(
+  id uuid DEFAULT uuid_generate_v4(),
+  description text not null CONSTRAINT billing_account_role_type_description_not_empty CHECK (description <> ''),
+  CONSTRAINT billing_account_role_type_pk PRIMARY key(id)
+);
+
+create table if not exists billing_account(
+  id uuid DEFAULT uuid_generate_v4(),
+  from_date date not null default current_date,
+  thru_date date,
+  description text,
+  CONSTRAINT billing_account_pk PRIMARY key(id)
+);
+
 create table if not exists invoice(
   id uuid DEFAULT uuid_generate_v4(),
   invoice_date date not null,
@@ -22,13 +36,23 @@ create table if not exists invoice(
   bill_from_party uuid not null,
   addressed_to_contact_mechanism uuid not null,
   sent_from_contact_mechansim uuid not null,
-  CONSTRAINT _pk PRIMARY key(id)
+  CONSTRAINT invoice_pk PRIMARY key(id)
 );
 
 create table if not exists invoice_item_type(
   id uuid DEFAULT uuid_generate_v4(),
   description text not null CONSTRAINT invoice_item_type_description_not_empty CHECK (description <> ''),
   CONSTRAINT invoice_item_type_pk PRIMARY key(id)
+);
+
+create table if not exists billing_account_role(
+  id uuid DEFAULT uuid_generate_v4(),
+  from_date date not null default current_date,
+  thru_date date,
+  an_account_for_party uuid not null,
+  described_by uuid not null references billing_account_role_type(id),
+  for_billing_account uuid not null references billing_account(id),
+  CONSTRAINT billing_account_role_pk PRIMARY key(id)
 );
 
 create table if not exists adjustment_type(
