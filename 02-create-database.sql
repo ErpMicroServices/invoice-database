@@ -1,3 +1,23 @@
+create table if not exists invoice_role_type(
+  id uuid DEFAULT uuid_generate_v4(),
+  description text not null CONSTRAINT invoice_role_type_description_not_empty CHECK (description <> ''),
+  CONSTRAINT invoice_role_type_pk PRIMARY key(id)
+);
+
+create table if not exists invoice_role(
+  id uuid DEFAULT uuid_generate_v4(),
+  datetime timestamp not null defualt current_timestamp,
+  precentage double precision,
+  for_invoice uuid not null references invoice(id),
+  described_by uuid not null references invoice_role_type(id),
+  of_party uuid not null,
+  billed_to_party uuid not null,
+  bill_from_party uuid not null,
+  addressed_to_contact_mechanism uuid not null,
+  sent_from_contact_mechansim uuid not null,
+  CONSTRAINT invoice_role_pk PRIMARY key(id)
+);
+
 create table if not exists invoice(
   id uuid DEFAULT uuid_generate_v4(),
   invoice_date date not null,
