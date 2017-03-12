@@ -15,4 +15,10 @@ insert into invoice_item_type (description) values ('Invoice Time Entry Item');
 
 insert into payment_type(description) values ('Receipt');
 insert into payment_type(description) values ('Disbursement');
-  
+
+insert into financial_account_transaction_type( description) values ('Withdrawal');
+insert into financial_account_transaction_type( description) values ('Deposit');
+insert into financial_account_transaction_type( description) values ('Financial Account Adjustment');
+
+insert into financial_account_type (description) values ('Investment Account');
+insert into financial_account_type (description) values ('Bank Account');

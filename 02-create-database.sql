@@ -158,3 +158,45 @@ create table if not exists payment_application(
   applied_to uuid not null references billing_account(id),
   CONSTRAINT payment_application_pk PRIMARY key(id)
 );
+
+create table if not exists financial_account_type(
+  id uuid DEFAULT uuid_generate_v4(),
+  description text not null CONSTRAINT financial_account_type_description_not_empty CHECK (description <> ''),
+  CONSTRAINT financial_account_type_pk PRIMARY key(id)
+);
+
+create table if not exists financial_account(
+  id uuid DEFAULT uuid_generate_v4(),
+  name text not null constraint financial_account_name_not_empty check (name <> ''),
+  CONSTRAINT financial_account_pk PRIMARY key(id)
+);
+
+create table if not exists financial_account_transaction_type(
+  id uuid DEFAULT uuid_generate_v4(),
+  description text not null CONSTRAINT financial_account_transaction_type_description_not_empty CHECK (description <> ''),
+  CONSTRAINT financial_account_transaction_type_pk PRIMARY key(id)
+);
+
+create table if not exists financial_account_transaction(
+  id uuid DEFAULT uuid_generate_v4(),
+  transaction_date date not null,
+  entry_date date not null default current_date,
+  financial_account uuid not null references financial_account(id),
+  CONSTRAINT financial_account_transaction_pk PRIMARY key(id)
+);
+
+create table if not exists financial_account_role_type(
+  id uuid DEFAULT uuid_generate_v4(),
+  description text not null CONSTRAINT financial_account_role_type_description_not_empty CHECK (description <> ''),
+  CONSTRAINT financial_account_role_type_pk PRIMARY key(id)
+);
+
+create table if not exists financial_account_role(
+  id uuid DEFAULT uuid_generate_v4(),
+  from_date date not null default current_date,
+  thru_date date,
+  of_financial_account uuid not null references financial_account(id),
+  for_financial_account_role_type uuid not null references financial_account_role_type(id),
+  for_party uuid not null ,
+  CONSTRAINT _pk PRIMARY key(id)
+);
