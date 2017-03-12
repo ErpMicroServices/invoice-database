@@ -77,6 +77,8 @@ create table if not exists invoice_item(
   charge_for_product_feature uuid,
   charge_for_prodcut uuid,
   adjustment_type_id uuid references adjustment_type(id),
+  billing_for_time_entry uuid,
+  billing_for_work_effort_billing uuid,
   CONSTRAINT invoice_item_pk PRIMARY key(id)
 );
 
