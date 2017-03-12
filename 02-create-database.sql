@@ -116,3 +116,45 @@ create table if not exists shipment_item_billing(
   for_invoice_item uuid not null references invoice_item(id),
   CONSTRAINT shipment_item_billing_pk PRIMARY key(id)
 );
+
+create table if not exists order_item_billing(
+  id uuid DEFAULT uuid_generate_v4(),
+  quantity bigint not null default 1,
+  amount double precision not null,
+  of_order_item uuid not null,
+  for_invoice_item uuid not null references invoice_item(id),
+  CONSTRAINT order_item_billing_pk PRIMARY key(id)
+);
+
+create table if not exists payment_method_type(
+  id uuid DEFAULT uuid_generate_v4(),
+  description text not null CONSTRAINT payment_method_type_description_not_empty CHECK (description <> ''),
+  CONSTRAINT payment_method_type_pk PRIMARY key(id)
+);
+
+create table if not exists payment_type(
+  id uuid DEFAULT uuid_generate_v4(),
+  description text not null CONSTRAINT payment_type_description_not_empty CHECK (description <> ''),
+  CONSTRAINT payment_type_pk PRIMARY key(id)
+);
+
+create table if not exists payment(
+  id uuid DEFAULT uuid_generate_v4(),
+  effective_date date not null default current_date,
+  payment_ref_num text,
+  amount double precision,
+  comment text,
+  paid_via uuid not null references payment_method_type(id),
+  from_party uuid not null,
+  to_party uuid not null,
+  CONSTRAINT payment_pk PRIMARY key(id)
+);
+
+create table if not exists payment_application(
+  id uuid DEFAULT uuid_generate_v4(),
+  amount_applied double precision,
+  applied_to_invoice uuid not null references invoice(id),
+  applying uuid not null references payment(id),
+  applied_to uuid not null references billing_account(id),
+  CONSTRAINT payment_application_pk PRIMARY key(id)
+);

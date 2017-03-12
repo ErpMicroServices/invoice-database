@@ -12,3 +12,7 @@ insert into invoice_item_type (description) values ('Invoice Product Feature Ite
 insert into invoice_item_type (description) values ('Invoice Product Item');
 insert into invoice_item_type (description) values ('Invoice Work Effort Item');
 insert into invoice_item_type (description) values ('Invoice Time Entry Item');
+
+insert into payment_type(description) values ('Receipt');
+insert into payment_type(description) values ('Disbursement');
+  
