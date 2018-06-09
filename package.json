@@ -1,5 +1,5 @@
 {
-  "name": "invoice-database",
+  "name": "invoicing-database",
   "version": "0.0.0",
   "description": "Data for the domain",
   "author": {
@@ -8,9 +8,9 @@
   },
   "license": "Apache-2.0",
   "scripts": {
-    "build": "docker build --tag erpmicroservices/invoice-database --rm .",
-    "start": "docker run --publish 5432:5432 --name invoice-database-1 erpmicroservices/invoice-database",
-    "test": "cucumber-js --compiler es6:babel-core/register  -r ./features ../invoice-features"
+
+    "start": "docker run --publish 5432:5432 --name invoicing-database erpmicroservices/invoicing-database",
+    "test": "cucumber-js --tags @invoicing_database --compiler es6:babel-core/register  -r ./features ../invoicing-features"
   },
   "repository": {
     "type": "git",
