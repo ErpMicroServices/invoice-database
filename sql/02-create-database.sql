@@ -187,6 +187,7 @@ create table if not exists payment_application
     id                 uuid DEFAULT uuid_generate_v4(),
     amount_applied     numeric(12, 3),
     invoice_id         uuid not null references invoice (id),
+    invoice_item_id    uuid not null references invoice_item (id),
     payment_id         uuid not null references payment (id),
     billing_account_id uuid not null references billing_account (id),
     CONSTRAINT payment_application_pk PRIMARY key (id)
