@@ -143,11 +143,11 @@ create table if not exists shipment_item_billing
 
 create table if not exists order_item_billing
 (
-    id                  uuid                    DEFAULT uuid_generate_v4(),
-    quantity            bigint         not null default 1,
-    amount              numeric(12, 3) not null,
-    of_order_item_id    uuid           not null,
-    for_invoice_item_id uuid           not null references invoice_item (id),
+    id              uuid                    DEFAULT uuid_generate_v4(),
+    quantity        bigint         not null default 1,
+    amount          numeric(12, 3) not null,
+    order_item_id   uuid           not null,
+    invoice_item_id uuid           not null references invoice_item (id),
     CONSTRAINT order_item_billing_pk PRIMARY key (id)
 );
 
