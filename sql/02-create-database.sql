@@ -135,9 +135,9 @@ create table if not exists term
 
 create table if not exists shipment_item_billing
 (
-    id                  uuid DEFAULT uuid_generate_v4(),
-    of_shipment_item_id uuid not null,
-    for_invoice_item_id uuid not null references invoice_item (id),
+    id               uuid DEFAULT uuid_generate_v4(),
+    shipment_item_id uuid not null,
+    invoice_item_id  uuid not null references invoice_item (id),
     CONSTRAINT shipment_item_billing_pk PRIMARY key (id)
 );
 
