@@ -204,9 +204,10 @@ create table if not exists financial_account_type
 
 create table if not exists financial_account
 (
-    id   uuid DEFAULT uuid_generate_v4(),
-    name text not null
+    id                        uuid DEFAULT uuid_generate_v4(),
+    name                      text not null
         constraint financial_account_name_not_empty check (name <> ''),
+    financial_account_type_id uuid not null references financial_account_type (id),
     CONSTRAINT financial_account_pk PRIMARY key (id)
 );
 
@@ -225,6 +226,7 @@ create table if not exists financial_account_transaction
     transaction_date     date not null,
     entry_date           date not null default current_date,
     financial_account_id uuid not null references financial_account (id),
+    payment_id           uuid not null references payment (id),
     CONSTRAINT financial_account_transaction_pk PRIMARY key (id)
 );
 
@@ -239,12 +241,12 @@ create table if not exists financial_account_role_type
 
 create table if not exists financial_account_role
 (
-    id                                 uuid          DEFAULT uuid_generate_v4(),
-    from_date                          date not null default current_date,
-    thru_date                          date,
-    of_financial_account_id            uuid not null references financial_account (id),
-    for_financial_account_role_type_id uuid not null references financial_account_role_type (id),
-    for_party_id                       uuid not null,
+    id                             uuid          DEFAULT uuid_generate_v4(),
+    from_date                      date not null default current_date,
+    thru_date                      date,
+    financial_account_id           uuid not null references financial_account (id),
+    financial_account_role_type_id uuid not null references financial_account_role_type (id),
+    party_id                       uuid not null,
     CONSTRAINT _pk PRIMARY key (id)
 );
 
