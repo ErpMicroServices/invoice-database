@@ -36,6 +36,7 @@ create table if not exists invoice
     billed_from_party_id              uuid not null,
     addressed_to_contact_mechanism_id uuid not null,
     sent_from_contact_mechanism_id    uuid not null,
+    billing_account_id                uuid not null references billing_account (id),
     CONSTRAINT invoice_pk PRIMARY key (id)
 );
 
@@ -60,12 +61,12 @@ create table if not exists invoice_item_type
 
 create table if not exists billing_account_role
 (
-    id                      uuid          DEFAULT uuid_generate_v4(),
-    from_date               date not null default current_date,
-    thru_date               date,
-    an_account_for_party_id uuid not null,
-    described_by_id         uuid not null references billing_account_role_type (id),
-    for_billing_account_id  uuid not null references billing_account (id),
+    id                           uuid          DEFAULT uuid_generate_v4(),
+    from_date                    date not null default current_date,
+    thru_date                    date,
+    account_for_party_id         uuid not null,
+    billing_account_role_type_id uuid not null references billing_account_role_type (id),
+    billing_account_id           uuid not null references billing_account (id),
     CONSTRAINT billing_account_role_pk PRIMARY key (id)
 );
 
