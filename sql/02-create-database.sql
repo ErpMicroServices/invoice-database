@@ -171,24 +171,24 @@ create table if not exists payment_type
 
 create table if not exists payment
 (
-    id              uuid          DEFAULT uuid_generate_v4(),
-    effective_date  date not null default current_date,
-    payment_ref_num text,
-    amount          numeric(12, 3),
-    comment         text,
-    paid_via_id     uuid not null references payment_method_type (id),
-    from_party_id   uuid not null,
-    to_party_id     uuid not null,
+    id                     uuid          DEFAULT uuid_generate_v4(),
+    effective_date         date not null default current_date,
+    payment_ref_num        text,
+    amount                 numeric(12, 3),
+    comment                text,
+    payment_method_type_id uuid not null references payment_method_type (id),
+    from_party_id          uuid not null,
+    to_party_id            uuid not null,
     CONSTRAINT payment_pk PRIMARY key (id)
 );
 
 create table if not exists payment_application
 (
-    id                    uuid DEFAULT uuid_generate_v4(),
-    amount_applied        numeric(12, 3),
-    applied_to_invoice_id uuid not null references invoice (id),
-    applying_id           uuid not null references payment (id),
-    applied_to_id         uuid not null references billing_account (id),
+    id                 uuid DEFAULT uuid_generate_v4(),
+    amount_applied     numeric(12, 3),
+    invoice_id         uuid not null references invoice (id),
+    payment_id         uuid not null references payment (id),
+    billing_account_id uuid not null references billing_account (id),
     CONSTRAINT payment_application_pk PRIMARY key (id)
 );
 
