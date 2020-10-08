@@ -78,22 +78,19 @@ create table if not exists adjustment_type
 );
 create table if not exists invoice_item
 (
-    id                                 uuid             DEFAULT uuid_generate_v4(),
-    taxable_flag                       boolean not null default true,
-    amount                             numeric(12, 3),
-    description                        text,
-    percentage                         numeric(5, 2),
-    adjustment_for_id                  uuid    not null references invoice (id),
-    sold_for_invoice_id                uuid    not null references invoice (id),
-    invoice_id                         uuid    not null,
-    type_id                            uuid    not null references invoice_item_type (id),
-    adjustment_for_invoice_item_id     uuid    not null references invoice_item_type (id),
-    sold_for_invoice_item_id           uuid references invoice_item (id),
-    charge_for_product_feature_id      uuid,
-    charge_for_product_id              uuid,
-    adjustment_type_id                 uuid references adjustment_type (id),
-    billing_for_time_entry_id          uuid,
-    billing_for_work_effort_billing_id uuid,
+    id                 uuid             DEFAULT uuid_generate_v4(),
+    sequence           numeric(3),
+    taxable_flag       boolean not null default true,
+    quantity           numeric(5),
+    amount             numeric(12, 3),
+    description        text,
+    adjustment_for_id  uuid references invoice_item (id),
+    sold_for_id        uuid references invoice_item (id),
+    invoice_id         uuid references invoice (id),
+    type_id            uuid    not null references invoice_item_type (id),
+    inventory_item_id  uuid,
+    product_feature_id uuid,
+    product_id         uuid,
     CONSTRAINT invoice_item_pk PRIMARY key (id)
 );
 
