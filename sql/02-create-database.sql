@@ -107,10 +107,10 @@ create table if not exists invoice_status_type
 
 create table if not exists invoice_status
 (
-    id           uuid          DEFAULT uuid_generate_v4(),
-    status_date  date not null default current_date,
-    status_for   uuid not null references invoice (id),
-    described_by uuid not null references invoice_status_type (id),
+    id                     uuid          DEFAULT uuid_generate_v4(),
+    status_date            date not null default current_date,
+    invoice_id             uuid not null references invoice (id),
+    invoice_status_type_id uuid not null references invoice_status_type (id),
     CONSTRAINT invoice_status_pk PRIMARY key (id)
 );
 
@@ -123,14 +123,14 @@ create table if not exists term_type
     CONSTRAINT term_type_pk PRIMARY key (id)
 );
 
-create table if not exists invoice_term
+create table if not exists term
 (
-    id                            uuid DEFAULT uuid_generate_v4(),
-    term_value                    text not null
-        CONSTRAINT term_value_not_empty CHECK (term_value <> ''),
-    condition_for_invoice_item_id uuid not null references invoice_item (id),
-    condition_for_invoice_id      uuid not null references invoice (id),
-    CONSTRAINT invoice_term_pk PRIMARY key (id)
+    id              uuid DEFAULT uuid_generate_v4(),
+    term_value      numeric(15, 2) not null,
+    invoice_item_id uuid           not null references invoice_item (id),
+    invoice_id      uuid           not null references invoice (id),
+    term_type_id    uuid           not null references term_type (id),
+    CONSTRAINT term_pk PRIMARY key (id)
 );
 
 create table if not exists shipment_item_billing
