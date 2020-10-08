@@ -246,3 +246,20 @@ create table if not exists financial_account_role
     for_party_id                       uuid not null,
     CONSTRAINT _pk PRIMARY key (id)
 );
+
+create table if not exists work_effort_billing
+(
+    id              uuid DEFAULT uuid_generate_v4(),
+    invoice_item_id uuid not null references invoice_item (id),
+    percentage      numeric(15, 3),
+    work_effort_id  uuid not null,
+    CONSTRAINT work_effort_billing_pk PRIMARY key (id)
+);
+
+create table if not exists time_entry_billing
+(
+    id              uuid DEFAULT uuid_generate_v4(),
+    invoice_item_id uuid not null references invoice_item (id),
+    time_entry_id   uuid not null,
+    CONSTRAINT time_entry_billing_pk PRIMARY key (id)
+);
