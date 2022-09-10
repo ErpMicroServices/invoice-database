@@ -14,3 +14,14 @@ databaseChangeLog:
         - sqlFile:
             path: ./sql/03-initial-data.sql
             splitStatements: false
+
+  - changeSet:
+      id: "Schema-validation: missing column [billed_at_contact_mechanism_id] in table [billing_account] #8"
+      author: Jim Barrows
+      changes:
+        - addColumn:
+            tableName: billing_account
+            columns:
+              - column:
+                  name: billed_at_contact_mechanism_id
+                  type: UUID
