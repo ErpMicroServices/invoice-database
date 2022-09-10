@@ -25,3 +25,13 @@ databaseChangeLog:
               - column:
                   name: billed_at_contact_mechanism_id
                   type: UUID
+  - changeSet:
+      id: "Schema-validation: missing column [executor_of_party_id] in table [financial_account_transaction]"
+      author: Jim Barrows
+      changes:
+        - addColumn:
+            tableName: financial_account_transaction
+            columns:
+              - column:
+                  name: executor_of_party_id
+                  type: UUID
