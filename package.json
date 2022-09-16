@@ -11,7 +11,7 @@
     "build": "npm run build:database; npm run build:docker",
     "build:docker": "docker build --tag erpmicroservices/invoice-database --rm .",
     "build:database": "mkdir -p build;liquibase-3.5.3-bin/liquibase --changeLogFile=./database_change_log.yml --url='offline:postgresql' updateSql > build/database_up.sql",
-    "clean": "rm -rf build; rm -rf generated-sql;yes | docker rmi erpmicroservices/invoice-database; yes | docker volume prune; docker rm invoice-database",
+    "clean": "rm databasechangelog.csv;rm -rf build; rm -rf generated-sql;yes | docker rmi erpmicroservices/invoice-database; yes | docker volume prune; docker rm invoice-database",
     "update_database": "liquibase-3.5.3-bin/liquibase --changeLogFile=./database_change_log.yml --url='jdbc:postgresql://localhost/invoice_database' --username=invoice_database --password=invoice_database update",
     "push": "docker push erpmicroservices/invoice-database:latest",
     "start": "docker run --publish 5432:5432 --name invoice-database erpmicroservices/invoice-database",
