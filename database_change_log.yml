@@ -35,3 +35,43 @@ databaseChangeLog:
               - column:
                   name: executor_of_party_id
                   type: UUID
+  - changeSet:
+      id: "Schema-validation: missing column [party_id] in table [invoice_role]"
+      author: Jim Barrows
+      changes:
+        - addColumn:
+            tableName: invoice_role
+            columns:
+              - column:
+                  name: party_id
+                  type: UUID
+  - changeSet:
+      id: "Schema-validation: missing column [type_id] in table [invoice_status]"
+      author: Jim Barrows
+      changes:
+        - addColumn:
+            tableName: invoice_status
+            columns:
+              - column:
+                  name: type_id
+                  type: UUID
+  - changeSet:
+      id: "Schema-validation: missing column [payor_party_role_id] in table [payment]"
+      author: Jim Barrows
+      changes:
+        - addColumn:
+            tableName: payment
+            columns:
+              - column:
+                  name: payor_party_role_id
+                  type: UUID
+  - changeSet:
+      id: "Schema-validation: missing column [receiver_party_role_id] in table [payment]"
+      author: Jim Barrows
+      changes:
+        - addColumn:
+            tableName: payment
+            columns:
+              - column:
+                  name: receiver_party_role_id
+                  type: UUID
