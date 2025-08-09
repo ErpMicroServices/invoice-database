@@ -8,11 +8,13 @@
   },
   "license": "Apache-2.0",
   "scripts": {
-    "build": "npm run build:database; npm run build:docker",
+    "build": "npm run build:database && npm run build:docker",
     "build:docker": "docker build --tag erpmicroservices/invoice-database --rm .",
-    "build:database": "mkdir -p build;liquibase-3.5.3-bin/liquibase --changeLogFile=./database_change_log.yml --url='offline:postgresql' updateSql > build/database_up.sql",
-    "clean": "rm databasechangelog.csv;rm -rf build; rm -rf generated-sql;yes | docker rmi erpmicroservices/invoice-database; yes | docker volume prune; docker rm invoice-database",
-    "update_database": "liquibase-3.5.3-bin/liquibase --changeLogFile=./database_change_log.yml --url='jdbc:postgresql://localhost/invoice_database' --username=invoice_database --password=invoice_database update",
+    "build:database": "mkdir -p build && cat sql/V_invo*.sql > build/database_up.sql",
+    "clean": "rm -rf build && rm -rf generated-sql && yes | docker rmi --force erpmicroservices/invoice-database && yes | docker volume prune && docker rm invoice-database",
+    "migrate": "npx flyway -configFiles=flyway.conf -url=jdbc:postgresql://${DB_HOST:-localhost}:${DB_PORT:-5432}/${DB_NAME:-invoice} -user=${DB_USER:-invoice} -password=${DB_PASSWORD:-invoice} migrate",
+    "migrate:info": "npx flyway -configFiles=flyway.conf -url=jdbc:postgresql://${DB_HOST:-localhost}:${DB_PORT:-5432}/${DB_NAME:-invoice} -user=${DB_USER:-invoice} -password=${DB_PASSWORD:-invoice} info",
+    "migrate:validate": "npx flyway -configFiles=flyway.conf -url=jdbc:postgresql://${DB_HOST:-localhost}:${DB_PORT:-5432}/${DB_NAME:-invoice} -user=${DB_USER:-invoice} -password=${DB_PASSWORD:-invoice} validate",
     "push": "docker push erpmicroservices/invoice-database:latest",
     "start": "docker run --publish 5432:5432 --name invoice-database erpmicroservices/invoice-database",
     "test": "cucumber-js --tags @party_database  --require-module @babel/register --require-module @babel/polyfill  -r ./features ../invoice-features"
@@ -31,6 +33,8 @@
     "braces": ">=3.0.2",
     "chai": "^4.3.6",
     "cucumber": "^6.0.7",
+    "dotenv": "^16.0.3",
+    "node-flywaydb": "^3.0.7",
     "pg-promise": "^10.12.0"
   }
 }
